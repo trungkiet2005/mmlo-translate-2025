@@ -133,7 +133,7 @@ def train(config: Config, tokenizer, new_tokens, train_dataset, val_dataset):
         "fp16": config.training.fp16,
         "dataloader_num_workers": config.training.dataloader_num_workers,
         "report_to": config.training.report_to,
-        "evaluation_strategy": "steps",
+        "eval_strategy": "steps",
         "save_strategy": "steps",
         "logging_dir": f"{config.training.output_dir}/logs"
     }
