@@ -1,0 +1,109 @@
+1) Tổng quan ngắn
+MMLoSo là workshop + shared task tập trung vào mô hình đa-modal / đa-ngôn ngữ cho các ngữ cảnh low-resource và ứng dụng xã hội (social impact). Có page và cuộc thi trên Kaggle/đường dẫn shared task của workshop; cuộc thi nhắm vào bài toán dịch/ghi nhận ngôn ngữ low-resource của khu vực Ấn Độ (một số ngôn ngữ Austro-asiatic / Indo-Aryan) và bài toán có yếu tố đa-modal / script khác nhau
+2) Task chính của cuộc thi
+Task core (shared task language challenge): xây dựng hệ thống (Unified Translation Model / MT) để dịch giữa High-Resource Languages (HRL) (Hindi / English) và một số Low-Resource Languages (LRL) (ví dụ Bhili, Mundari, Santali). Hướng chính cuộc thi tập trung LRL → HRL (ví dụ Mundari→Hindi, Santali→English, Bhili→Hindi). 
+Workshop/competition cũng nhấn mạnh các đề bài phụ liên quan tới:
+
+
+robustness dưới conditions thiếu dữ liệu / thiếu modality,
+
+
+xử lý script khác nhau (ví dụ Santali có Ol Chiki script; English-Santali có Roman↔OlChiki issues),
+
+
+và yếu tố social-impact (ứng dụng thực tế như bảo tồn ngôn ngữ, tài liệu hoá, dịch hỗ trợ cộng đồng). 
+3) Dataset — cấu trúc & chi tiết (những điểm quan trọng)
+Nguồn dữ liệu / con số chung: mô tả dataset shared task: ~20,000 sentence pairs cho mỗi hướng (tức ~20k cặp cho từng language-pair direction), tập train/dev được chia (ví dụ các paper dùng 95% train / 5% dev cho thí nghiệm). Ngôn ngữ/paired directions nêu trong tài liệu: Hindi↔Bhili, Hindi↔Mundari, English↔Santali; nhưng thử nghiệm chính tập trung LRL→HRL như đã nói. Santali/Ol-Chiki có lưu ý về tokenization/sequence length. arXiv+1
+Dataset Description
+Files
+bhiili-train.csv - Hindi - Bhilli training set
+gondari-train.csv - Gondari - Hindi training set
+mundari-train.csv - Mundari - Hindi training set
+santali-train.csv - Santali - English training set
+test.csv - the test set
+Columns
+The following Column(s) are required in submission.csv
+Row ID
+Source Lang
+Source Sentence
+Target Lang
+Target Sentence
+NO WHITE SPACES
+
+
+PATH
+/kaggle/input/mm-lo-so-2025/bhili-train.csv
+/kaggle/input/mm-lo-so-2025/gondi-train.csv
+/kaggle/input/mm-lo-so-2025/mundari-train.csv
+/kaggle/input/mm-lo-so-2025/santali-train.csv
+
+/kaggle/input/mm-lo-so-2025/test.csv
+
+
+ví dụ cho bhili-train.csv có các cột sau: 
+# or không có tên : 01001
+Hindi: "उसके ठीक दो महीने बाद 26 जनवरी 1950 को हमने अपना संविधान लागू किया”    
+Bhili: "तिनां वे मइना बाद 26 जनवरी 1950 ना देन हमुऐ आपडा काईदा धापिया।?"     
+
+
+ví dụ cho gondi-train.csv có các cột sau: 
+# or không có tên : 01001
+Hindi: "हाथी ने सूँड़ उठाकर हामी भरी ।”    
+Gondi: "एन (हत्ती) होन्ड तेह्च मीले मात।"  
+
+
+
+
+ví dụ cho mundari-train.csv có các cột sau: 
+# or không có tên : 01001
+Hindi: "यही तुम्हारी फूफी सास है-वह आंगन से देख रही है और उनकी बहु दरवाजे से।”    
+Mundari: "हनिः दङ हतोम हुनरीः - निःदो रचाएते लेलतना अद् किमिनतेदो दुअरआते।"
+
+
+ví dụ cho santali-train.csv   có các cột sau: 
+# or không có tên : 01001
+English: "Deno 1.0 was released on May 13, 2020.”    
+Santali: "ᱰᱮᱱᱳ ᱑ᱹ᱐ ᱫᱚ ᱑᱓ ᱢᱮ, ᱒᱐᱒᱐ ᱨᱮ ᱪᱷᱟᱹᱲᱮ ᱧᱟᱢ ᱞᱮᱫᱟ ᱾"
+
+
+Evaluation
+link
+keyboard_arrow_up
+NOTE: Test Data will be released within a month
+The Evaluation for multiple translation tasks is the following:
+0.6 x 
+  ( 0.6 x 
+   (Bleu(Hindi->Bhilli)  + Bleu(Hindi->Mundari) + Bleu(Hindi->Gondi) + Bleu(English->Santali))
+  + 0.4 x 
+   (Bleu(Bhilli->Hindi)  + Bleu(Mundari->Hindi) + Bleu(Gondi->Hindi) + Bleu(Santali->English))
+  )
+
++ 0.4 x 
+  ( 0.6 x 
+   (chrF(Hindi->Bhilli)  + chrF(Hindi->Mundari) + chrF(Hindi->Gondi) + chrF(English->Santali))
+  + 0.4 x 
+   (chrF(Bhilli->Hindi)  + chrF(Mundari->Hindi) + chrF(Gondi->Hindi) + chrF(Santali->English))
+  )
+
+
+Submission File
+For each ROW ID in the test set, you must predict the Translation for Source Sentence and save it in the Target Sentence. The submission.csv must have two columns Row ID & Target Sentence.
+NOTE : Keep the name of columns as Row ID, Source Lang, Source Sentence, Target Lang & Target Sentence (watch out for case and spaces) for the successful auto-evaluation. The values in Source Lang & Target Lang must be from {Bhilli, Hindi, Mundari, Gondi, English, Santali}. Any kind of typo (even in case or space) would fail auto-evaluation. Any NULL or EMPTY value in Target Sentence must be filled with . or any other symbol. NULL values would fail evaluation as well.
+
+
+khi code phải chia đường dẫn làm 2 phần: phần chung /kaggle/input/mm-lo-so-2025/ và phần tên file cụ thể (ví dụ bhili-train.csv) để load dữ liệu đúng.
+có 2 path_root:
+1 là local: là /dataset để tui test trên máy cá nhân
+2 là path trên kaggle để chạy code trên kaggle
+khi tui chạy trên kaggle thì path_root = /kaggle/input/mm-lo-so-2025/
+điều này giúp tui dễ dàng chuyển đổi giữa môi trường local và kaggle mà không cần sửa nhiều chỗ trong code. 
+thêm có tui arg để switch giữa local và kaggle
+path_root = "/kaggle/input/mm-lo-so-2025/"  # path trên kaggle
+path_root = "/dataset/"  # path local
+
+python main.py --local  # chạy trên local
+python main.py          # chạy trên kaggle
+
+
+
+
